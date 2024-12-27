@@ -14,10 +14,11 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    RobotoMono: require('../assets/fonts/RobotoMono-Regular.ttf'),
   });
 
   useEffect(() => {
+    document.title = 'Lista de Tarefas';
     if (loaded) {
       SplashScreen.hideAsync();
     }
