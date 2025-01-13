@@ -14,10 +14,10 @@ export const Colors = {
     botaoAmarelo2: '#e1A32a'
   },
   light: {
-    text: '#11181C',
+    text: '#fff',
     background: '#fff',
     tint: tintColorLight,
-    icon: '#687076',
+    icon: '#058',
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
   },

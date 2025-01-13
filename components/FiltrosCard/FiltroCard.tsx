@@ -1,74 +1,51 @@
+import { alteraFiltro } from "@/store/reducers/filtro";
+import { RootReducer } from "@/store/store";
+import { useDispatch, useSelector } from 'react-redux';
+import * as enums from '../utils/enums/Tarefa';
 import * as S from './styles';
 
-
 export type FiltroProps = {
-  ativo?: boolean;
-  contador:number;
   legenda:string;
+  criterio: 'status' | 'prioridade' | 'todas';
+  valor?: enums.Prioridade | enums.Status;
 };
 
-const FiltroCard = ({ativo, contador, legenda}: FiltroProps)=> (
+const FiltroCard = ({legenda, criterio, valor }: FiltroProps)=> {
 
-  <S.Card ativo={ativo}> 
-  <S.Contador>{contador}</S.Contador>
-  <S.Label>{legenda}</S.Label>
-</S.Card>
-)
+    const dispatch = useDispatch();
+  
+    const {filtro, tarefas} = useSelector((state: RootReducer) => state);
+  
+    const verificaAtivo = () => {
+  
+      const mesmoCriterio = filtro.criterio === criterio 
+  
+      const mesmoValor = filtro.valor === valor;
+  
+        return mesmoCriterio && mesmoValor;}
+      
+  const filtrar = ()=> dispatch(alteraFiltro({criterio, valor}));
+
+
+  const ativo= verificaAtivo();
+
+
+  const contarTarefas = () => {
+    if (criterio === 'todas')return tarefas.itens.length;
+    if (criterio  === 'prioridade'){ return tarefas.itens.filter((item)=> item.prioridade === valor).length;}
+    if (criterio  === 'status') {return tarefas.itens.filter((item)=> item.status === valor).length;}
+}
+const contador = contarTarefas(); 
+
+  return (
+    <S.Card ativo={ativo} onClick={filtrar}> 
+    <S.Contador>{contador}</S.Contador>
+    <S.Label>{legenda}</S.Label>
+  </S.Card>
+  )
+}
 ;
 
 
 export default FiltroCard;
 
-
-
-
-
-/* export type FiltroProps = {
-  ativo?: boolean;
-  contador:number;
-  legenda:string;
-  lightColor?: string;
-  darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
-};
-
-export function FiltroCard({
-  ativo = false,
-  lightColor,
-  darkColor,
-  type = 'default',
-
-  contador,
-  legenda,
-  ...rest
-}: FiltroProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
-
-  return (
-    <S.Card ativo={ativo} contador={contador} legenda={legenda} {...rest}>
-      <S.Contador>{contador}</S.Contador>
-      <S.Label>{legenda}</S.Label>
-    </S.Card>
-  );
-} */
-
-/* const styles = StyleSheet.create({
-  card: {
-    padding: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-    width: 110,
-  },
-  contador: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 4,
-  },
-  label: {
-    fontSize: 14,
-    textAlign: 'center',
-    
-  },
-});
- */
